@@ -20,43 +20,44 @@ class RegistrasiPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginMethodState extends State<LoginMethod> {
-  final _formKey = GlobalKey<FormState>();
-  String name = "";
-  String email = "";
-  String password = "";
-  String password_confirmation = "";
-  bool loading = false;
-  String? errorMessage;
-  void _submit() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        loading = true;
-        errorMessage = null;
-      });
-      try {
-        final result = await ApiServices.login(email, password);
-        if (result["status"] == "success") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => Homepage()),
-          );
-        }
-      } catch (e) {
-        setState(() {
-          errorMessage = "Terjadi Kesalahan ${e.toString()}";
-        });
-      } finally {
-        setState(() {
-          loading = false;
-        });
-      }
-    }
-  }
-}
+// class _LoginMethodState extends State<LoginMethod> {
+//   final _formKey = GlobalKey<FormState>();
+//   String name = "";
+//   String email = "";
+//   String password = "";
+//   String password_confirmation = "";
+//   bool loading = false;
+//   String? errorMessage;
+//   void _submit() async {
+//     if (_formKey.currentState!.validate()) {
+//       setState(() {
+//         loading = true;
+//         errorMessage = null;
+//       });
+//       try {
+//         final result = await ApiServices.login(email, password);
+//         if (result["status"] == "success") {
+//           Navigator.pushReplacement(
+//             context,
+//             MaterialPageRoute(builder: (_) => Homepage()),
+//           );
+//         }
+//       } catch (e) {
+//         setState(() {
+//           errorMessage = "Terjadi Kesalahan ${e.toString()}";
+//         });
+//       } finally {
+//         setState(() {
+//           loading = false;
+//         });
+//       }
+//     }
+//   }
+// }
 
 class _RegisterPageState extends State<RegistrasiPage> {
   bool _agreedToTerms = false;
+  bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
                   hintText: 'Masukkan nama lengkap',
                 ),
                 SizedBox(height: 15),
-                _buildTextField(
+                _buildTextField(dec
                   label: 'Email',
                   hintText: 'Masukkan email',
                   keyboardType: TextInputType.emailAddress,
