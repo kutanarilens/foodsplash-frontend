@@ -10,11 +10,10 @@ class RegistrasiPage extends StatefulWidget {
 class _RegisterPageState extends State<RegistrasiPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // REFRAKTOR: Kembali menggunakan variabel String sederhana
   String name = "";
   String email = "";
   String password = "";
-  String passwordConfirmation = ""; // Menggunakan nama yang lebih jelas
+  String passwordConfirmation = "";
 
   bool loading = false;
   String? errorMessage;
@@ -23,7 +22,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
   bool _isConfirmPasswordVisible = false;
 
   void _submit() async {
-    // 1. Validasi Terms & Conditions
     if (!_agreedToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -35,7 +33,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
       return;
     }
 
-    // Pastikan validasi form berhasil sebelum melanjutkan
     if (_formKey.currentState!.validate()) {
       setState(() {
         loading = true;
@@ -43,16 +40,14 @@ class _RegisterPageState extends State<RegistrasiPage> {
       });
 
       try {
-        // Panggilan ApiServices.register menggunakan variabel String
         final result = await ApiServices.register(
-          name, // Mengambil nilai Nama
-          email, // Mengambil nilai Email
-          password, // Mengambil nilai Password
-          passwordConfirmation, // Mengambil nilai Konfirmasi Password
+          name,
+          email,
+          password,
+          passwordConfirmation,
         );
 
         if (result["status"] == "success") {
-          // Registrasi Berhasil: Tampilkan pesan sukses dan navigasi ke Login
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Registrasi Berhasil! Silakan masuk.'),
@@ -63,14 +58,10 @@ class _RegisterPageState extends State<RegistrasiPage> {
             MaterialPageRoute(builder: (_) => LoginScreen()),
           );
         } else {
-          // Registrasi Gagal (Error Validasi dari API)
           setState(() {
-            // ...
             String apiMessage = result["message"] ?? "Pendaftaran gagal.";
 
-            // Contoh penyesuaian jika Anda tahu pesan spesifik dari Laravel
             if (apiMessage.contains("email") && apiMessage.contains("taken")) {
-              // PESAN INI AKAN MUNCUL di Flutter jika email sudah ada!
               errorMessage =
                   "Akun sudah terdaftar. Silakan gunakan email lain.";
             } else {
@@ -79,9 +70,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
           });
         }
       } catch (e) {
-        // Kesalahan Jaringan
         setState(() {
-          // Tambahkan pesan yang lebih spesifik jika ini adalah Error tipe Exception
           errorMessage = "Kesalahan: ${e.toString()}. Cek koneksi server Anda.";
         });
       } finally {
@@ -94,7 +83,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
 
   @override
   void dispose() {
-    // Karena tidak menggunakan Controller, dispose tidak diperlukan
     super.dispose();
   }
 
@@ -123,28 +111,24 @@ class _RegisterPageState extends State<RegistrasiPage> {
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
-            // Gunakan SingleChildScrollView untuk menghindari overflow
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                // Logo
                 const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, bottom: 40.0),
                   child: Image.asset(
-                    'assets/images/foodsplash.png', // Pastikan path benar
+                    'assets/images/foodsplash.png',
                     height: 50,
                   ),
                 ),
                 const SizedBox(height: 75),
 
-                // Form Registrasi
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      // Pesan Error dari API
                       if (errorMessage != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 15.0),
@@ -158,7 +142,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
                           ),
                         ),
 
-                      // Nama Lengkap
                       TextFormField(
                         onChanged: (value) => name = value,
                         decoration: _inputDecoration(labelText: "Nama Lengkap"),
@@ -168,7 +151,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Email
                       TextFormField(
                         onChanged: (value) => email = value,
                         keyboardType: TextInputType.emailAddress,
@@ -182,7 +164,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Password
                       TextFormField(
                         onChanged: (value) => password = value,
                         obscureText: !_isPasswordVisible,
@@ -208,7 +189,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Konfirmasi Password
                       TextFormField(
                         onChanged: (value) => passwordConfirmation = value,
                         obscureText: !_isConfirmPasswordVisible,
@@ -228,21 +208,17 @@ class _RegisterPageState extends State<RegistrasiPage> {
                             },
                           ),
                         ),
-                        // *** Perbaikan Validator ***
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Konfirmasi password wajib diisi";
                           }
-                          // Cek kesamaan dengan nilai password yang pertama
                           if (value != password) {
-                            // Membandingkan dengan variabel 'password'
                             return "Password tidak sama";
                           }
                           return null;
                         },
                       ),
 
-                      // Teks bantuan untuk password (sesuai gambar)
                       const Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -256,7 +232,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
 
                       const SizedBox(height: 10),
 
-                      // Checkbox Persetujuan
                       Row(
                         children: [
                           Checkbox(
@@ -301,7 +276,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Tombol Daftar
                       loading
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
@@ -316,7 +290,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
                                 minimumSize: const Size(
                                   double.infinity,
                                   50,
-                                ), // Membuat tombol penuh lebar
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -333,7 +307,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
 
                       const SizedBox(
                         height: 150,
-                      ), // Tambahan padding agar konten terlihat di atas background biru
+                      ),
                     ],
                   ),
                 ),
@@ -345,7 +319,6 @@ class _RegisterPageState extends State<RegistrasiPage> {
     );
   }
 
-  // Helper function untuk InputDecoration yang lebih bersih
   InputDecoration _inputDecoration({
     required String labelText,
     Widget? suffixIcon,

@@ -1,77 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:foodsplash/pages/akun_page.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart';
+import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/promo_page.dart';
-import 'package:foodsplash/widgets/header_widget.dart';
-import 'package:foodsplash/widgets/category_menu.dart';
-import 'package:foodsplash/widgets/food_item_card.dart';
-import 'package:foodsplash/widgets/promo_banner.dart';
 
-class Homepage extends StatelessWidget {
+class AktivitasPage extends StatelessWidget {
+  const AktivitasPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: HeaderWidget(),
         toolbarHeight: 120,
         elevation: 0,
         backgroundColor: Colors.white,
       ),
-
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            PromoBanner(),
-
-            SizedBox(height: 20),
-
-            CategoryMenu(),
-
-            Divider(height: 40, thickness: 8, color: Colors.grey[100]),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Text(
-                'Most loved',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: FoodItemCard(
-                      title: 'Mie Gacoan, Depok Kelapa Dua',
-                      distance: '2.17 km',
-                      rating: '4.8 5rb+ rating',
-                    ),
-                  ),
-                ),
-
-                SizedBox(width: 15),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: FoodItemCard(
-                      title: 'Dadar Beredar, Kelapa Dua',
-                      distance: '2.12 km',
-                      rating: '4.6 2rb+ rating',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+      body: SingleChildScrollView(padding: EdgeInsets.only(bottom: 20)),
       bottomNavigationBar: _NavigationMenu(),
     );
   }
@@ -89,14 +33,14 @@ class _NavigationMenu extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _buildNavItem(Icons.home, 'Produk', true, () {
+            _buildNavItem(Icons.home, 'Produk', false, () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Homepage()),
               );
             }),
 
-            _buildNavItem(Icons.article_outlined, 'Aktivitas', false, () {
+            _buildNavItem(Icons.article_outlined, 'Aktivitas', true, () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => AktivitasPage()),
