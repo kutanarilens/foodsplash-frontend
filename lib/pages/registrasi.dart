@@ -1,68 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/login.dart';
 
-/*{
-    "status": "success",
-    "message": "User registered successfully",
-    "user": {
-        "name": "agin",
-        "email": "agin@gmail.com",
-        "password": "$2y$12$mNKB4ZtWZnMRgHl/yYkBF.hfQdf7NwC0m3w3ww22bDTR2brjyx/RW",
-        "updated_at": "2025-10-29T13:42:28.000000Z",
-        "created_at": "2025-10-29T13:42:28.000000Z",
-        "id": 5
-    },
-    "token": "13|9fDn3RvFBz3zencCl8QXTMKFrLu0EdWzZQK188Huf38cbddd"
-}
-*/
 class RegistrasiPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  State<RegistrasiPage> createState() => _RegisterPageState();
 }
 
-// class _LoginMethodState extends State<LoginMethod> {
-//   final _formKey = GlobalKey<FormState>();
-//   String name = "";
-//   String email = "";
-//   String password = "";
-//   String password_confirmation = "";
-//   bool loading = false;
-//   String? errorMessage;
-//   void _submit() async {
-//     if (_formKey.currentState!.validate()) {
-//       setState(() {
-//         loading = true;
-//         errorMessage = null;
-//       });
-//       try {
-//         final result = await ApiServices.login(email, password);
-//         if (result["status"] == "success") {
-//           Navigator.pushReplacement(
-//             context,
-//             MaterialPageRoute(builder: (_) => Homepage()),
-//           );
-//         }
-//       } catch (e) {
-//         setState(() {
-//           errorMessage = "Terjadi Kesalahan ${e.toString()}";
-//         });
-//       } finally {
-//         setState(() {
-//           loading = false;
-//         });
-//       }
-//     }
-//   }
-// }
-
 class _RegisterPageState extends State<RegistrasiPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  // REFRAKTOR: Kembali menggunakan variabel String sederhana
+  String name = "";
+  String email = "";
+  String password = "";
+  String passwordConfirmation = ""; // Menggunakan nama yang lebih jelas
+
+  bool loading = false;
+  String? errorMessage;
   bool _agreedToTerms = false;
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+
+  void _submit() async {
+    // 1. Validasi Terms & Conditions
+    if (!_agreedToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Anda harus menyetujui Ketentuan dan Kebijakan Privasi.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    // Pastikan validasi form berhasil sebelum melanjutkan
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        loading = true;
+        errorMessage = null;
+      });
+
+      try {
+        // Panggilan ApiServices.register menggunakan variabel String
+        final result = await ApiServices.register(
+          name, // Mengambil nilai Nama
+          email, // Mengambil nilai Email
+          password, // Mengambil nilai Password
+          passwordConfirmation, // Mengambil nilai Konfirmasi Password
+        );
+
+        if (result["status"] == "success") {
+          // Registrasi Berhasil: Tampilkan pesan sukses dan navigasi ke Login
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Registrasi Berhasil! Silakan masuk.'),
+            ),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => LoginScreen()),
+          );
+        } else {
+          // Registrasi Gagal (Error Validasi dari API)
+          setState(() {
+            // ...
+            String apiMessage = result["message"] ?? "Pendaftaran gagal.";
+
+            // Contoh penyesuaian jika Anda tahu pesan spesifik dari Laravel
+            if (apiMessage.contains("email") && apiMessage.contains("taken")) {
+              // PESAN INI AKAN MUNCUL di Flutter jika email sudah ada!
+              errorMessage =
+                  "Akun sudah terdaftar. Silakan gunakan email lain.";
+            } else {
+              errorMessage = apiMessage;
+            }
+          });
+        }
+      } catch (e) {
+        // Kesalahan Jaringan
+        setState(() {
+          // Tambahkan pesan yang lebih spesifik jika ini adalah Error tipe Exception
+          errorMessage = "Kesalahan: ${e.toString()}. Cek koneksi server Anda.";
+        });
+      } finally {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // Karena tidak menggunakan Controller, dispose tidak diperlukan
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Latar belakang atas putih
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -75,7 +114,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
-        title: Text(
+        title: const Text(
           "Daftar",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
@@ -83,153 +122,222 @@ class _RegisterPageState extends State<RegistrasiPage> {
       ),
       body: Stack(
         children: <Widget>[
-          Align(
-            alignment: Alignment.bottomCenter,
-            // child: ,
-          ),
-
           SingleChildScrollView(
+            // Gunakan SingleChildScrollView untuk menghindari overflow
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 20),
-                Image.asset(
-                  'assets/images/foodsplash.png',
-                  height: 100,
-                  width: 230,
-                ),
-                SizedBox(height: 30),
-                _buildTextField(
-                  label: 'Nama Lengkap',
-                  hintText: 'Masukkan nama lengkap',
-                ),
-                SizedBox(height: 15),
-                _buildTextField(
-                  label: 'Email',
-                  hintText: 'Masukkan email',
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: 15),
-
-                // Input Password
-                _buildPasswordTextField(
-                  label: 'Password',
-                  hintText: 'Masukkan password',
-                  isVisible: _isPasswordVisible,
-                  onToggleVisibility: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
-                SizedBox(height: 15),
-
-                _buildPasswordTextField(
-                  label: 'Konfirmasi Password',
-                  hintText: 'Konfirmasi password',
-                  isVisible: _isConfirmPasswordVisible,
-                  onToggleVisibility: () {
-                    setState(() {
-                      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                    });
-                  },
-                ),
+                // Logo
+                const SizedBox(height: 50),
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-                  child: Text(
-                    'Password minimal 6 Karakter',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 40.0),
+                  child: Image.asset(
+                    'assets/images/foodsplash.png', // Pastikan path benar
+                    height: 50,
                   ),
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 75),
 
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: _agreedToTerms,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          _agreedToTerms = newValue ?? false;
-                        });
-                      },
-                      activeColor: Colors.blue,
-                    ),
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(fontSize: 13, color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Saya menyetujui '),
-                            TextSpan(
-                              text: 'Ketentuan',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
+                // Form Registrasi
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // Pesan Error dari API
+                      if (errorMessage != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text(
+                            errorMessage!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
                             ),
-                            TextSpan(text: ' dan '),
-                            TextSpan(
-                              text: 'Kebijakan Privasi',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                      // Nama Lengkap
+                      TextFormField(
+                        onChanged: (value) => name = value,
+                        decoration: _inputDecoration(labelText: "Nama Lengkap"),
+                        validator: (value) => value == null || value.isEmpty
+                            ? "Nama Lengkap wajib diisi"
+                            : null,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Email
+                      TextFormField(
+                        onChanged: (value) => email = value,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: _inputDecoration(labelText: "Email"),
+                        validator: (value) =>
+                            value == null ||
+                                value.isEmpty ||
+                                !value.contains("@")
+                            ? "Email Tidak Valid"
+                            : null,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Password
+                      TextFormField(
+                        onChanged: (value) => password = value,
+                        obscureText: !_isPasswordVisible,
+                        decoration: _inputDecoration(
+                          labelText: "Password",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
-                            TextSpan(text: ' di\nFoodSplash'),
-                          ],
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (value) =>
+                            value == null || value.isEmpty || value.length < 6
+                            ? "Password minimal 6 karakter"
+                            : null,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Konfirmasi Password
+                      TextFormField(
+                        onChanged: (value) => passwordConfirmation = value,
+                        obscureText: !_isConfirmPasswordVisible,
+                        decoration: _inputDecoration(
+                          labelText: "Konfirmasi Password",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordVisible =
+                                    !_isConfirmPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                        // *** Perbaikan Validator ***
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Konfirmasi password wajib diisi";
+                          }
+                          // Cek kesamaan dengan nilai password yang pertama
+                          if (value != password) {
+                            // Membandingkan dengan variabel 'password'
+                            return "Password tidak sama";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      // Teks bantuan untuk password (sesuai gambar)
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            "Password minimal 6 Karakter",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
 
-                // Tombol Daftar
-                _buildRegisterButton(
-                  text: 'Daftar',
-                  onPressed: _agreedToTerms
-                      ? () {
-                          // TODO: Tambahkan logika pendaftaran di sini
-                          print('Daftar ditekan!');
-                        }
-                      : null, // Tombol nonaktif jika belum menyetujui
+                      const SizedBox(height: 10),
+
+                      // Checkbox Persetujuan
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _agreedToTerms,
+                            onChanged: (bool? newValue) {
+                              setState(() {
+                                _agreedToTerms = newValue ?? false;
+                              });
+                            },
+                            activeColor: Colors.blue,
+                          ),
+                          const Flexible(
+                            child: Text.rich(
+                              TextSpan(
+                                text: 'Saya menyetujui ',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 13,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Ketentuan',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(text: ' dan '),
+                                  TextSpan(
+                                    text: 'Kebijakan Privasi',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(text: ' di FoodSplash'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Tombol Daftar
+                      loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromARGB(
+                                  1000,
+                                  112,
+                                  148,
+                                  255,
+                                ),
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(
+                                  double.infinity,
+                                  50,
+                                ), // Membuat tombol penuh lebar
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: _submit,
+                              child: const Text(
+                                "Daftar",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                      const SizedBox(
+                        height: 150,
+                      ), // Tambahan padding agar konten terlihat di atas background biru
+                    ],
+                  ),
                 ),
-                SizedBox(height: 20),
               ],
-            ),
-          ),
-
-          // Teks di bagian paling bawah
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 20.0, left: 20, right: 20),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                  children: <TextSpan>[
-                    TextSpan(text: 'Dengan mendaftar saya menyetujui '),
-                    TextSpan(
-                      text: 'Syarat & Ketentuan',
-                      style: TextStyle(
-                        color: Color(0xFFC7E6FF),
-                        fontWeight: FontWeight.bold,
-                      ), // Warna biru lebih terang
-                      // TODO: Tambahkan onTap untuk navigasi ke Syarat & Ketentuan
-                    ),
-                    TextSpan(text: ' dan\n'),
-                    TextSpan(
-                      text: 'Kebijakan Privasi',
-                      style: TextStyle(
-                        color: Color(0xFFC7E6FF),
-                        fontWeight: FontWeight.bold,
-                      ), // Warna biru lebih terang
-                      // TODO: Tambahkan onTap untuk navigasi ke Kebijakan Privasi
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         ],
@@ -237,118 +345,15 @@ class _RegisterPageState extends State<RegistrasiPage> {
     );
   }
 
-  // Widget pembantu untuk TextField biasa
-  Widget _buildTextField({
-    required String label,
-    required String hintText,
-    TextInputType keyboardType = TextInputType.text,
+  // Helper function untuk InputDecoration yang lebih bersih
+  InputDecoration _inputDecoration({
+    required String labelText,
+    Widget? suffixIcon,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        SizedBox(height: 8),
-        TextField(
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hintText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.blue.shade400, width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-            isDense: true,
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Widget pembantu untuk TextField Password
-  Widget _buildPasswordTextField({
-    required String label,
-    required String hintText,
-    required bool isVisible,
-    required VoidCallback onToggleVisibility,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        SizedBox(height: 8),
-        TextField(
-          obscureText: !isVisible, // Sembunyikan teks jika !isVisible
-          decoration: InputDecoration(
-            hintText: hintText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.blue.shade400, width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-            isDense: true,
-            suffixIcon: IconButton(
-              icon: Icon(
-                isVisible ? Icons.visibility : Icons.visibility_off,
-                color: Colors.grey,
-              ),
-              onPressed: onToggleVisibility,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Widget pembantu untuk tombol Daftar
-  Widget _buildRegisterButton({required String text, VoidCallback? onPressed}) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed, // Akan null jika tidak disetujui
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF67B5FF), // Warna biru tua
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          elevation: 5,
-          // Mengatur warna saat tombol nonaktif
-          foregroundColor: Colors.white, // Text color when enabled
-          disabledBackgroundColor:
-              Colors.grey[300], // Background color when disabled
-          disabledForegroundColor: Colors.grey[600], // Text color when disabled
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
+    return InputDecoration(
+      labelText: labelText,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      suffixIcon: suffixIcon,
     );
   }
 }

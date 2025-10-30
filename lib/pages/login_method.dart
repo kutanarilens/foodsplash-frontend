@@ -133,21 +133,32 @@ class _LoginMethodState extends State<LoginMethod> {
                         ),
                         SizedBox(height: 20),
                         loading
-                            ? CircularProgressIndicator()
+                            ? const Center(child: CircularProgressIndicator())
                             : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blueAccent,
-                                  foregroundColor: Colors.white,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 50,
-                                    vertical: 12,
+                                  backgroundColor: const Color.fromARGB(
+                                    1000,
+                                    112,
+                                    148,
+                                    255,
                                   ),
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size(
+                                    double.infinity,
+                                    50,
+                                  ), // Membuat tombol penuh lebar
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
                                 onPressed: _submit,
-                                child: Text("Login"),
+                                child: const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                       ],
                     ),
