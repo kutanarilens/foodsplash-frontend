@@ -57,7 +57,6 @@ class _LoginMethodState extends State<LoginMethod> {
 
 class _RegisterPageState extends State<RegistrasiPage> {
   bool _agreedToTerms = false;
-  bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
