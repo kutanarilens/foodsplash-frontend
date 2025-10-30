@@ -104,7 +104,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
                   hintText: 'Masukkan nama lengkap',
                 ),
                 SizedBox(height: 15),
-                _buildTextField(dec
+                _buildTextField(
                   label: 'Email',
                   hintText: 'Masukkan email',
                   keyboardType: TextInputType.emailAddress,
