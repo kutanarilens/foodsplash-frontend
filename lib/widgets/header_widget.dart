@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodsplash/pages/chat_list_page.dart';
 
 class HeaderWidget extends StatelessWidget {
   @override
@@ -51,11 +52,22 @@ class HeaderWidget extends StatelessWidget {
                 ),
               ),
             ),
-
-
-            Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
+            IconButton(
+              tooltip: 'Notifications',
+              icon: const Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
+              onPressed: () {},
+            ),
             SizedBox(width: 10),
-            Icon(Icons.chat_bubble, color: Colors.lightBlueAccent),
+            IconButton(
+              tooltip: 'Messages',
+              icon: const Icon(Icons.chat_bubble, color: Colors.lightBlueAccent),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ChatListPage()),
+                );
+              },
+            ),
           ],
         ),
 
