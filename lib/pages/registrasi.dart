@@ -287,10 +287,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
                                   255,
                                 ),
                                 foregroundColor: Colors.white,
-                                minimumSize: const Size(
-                                  double.infinity,
-                                  50,
-                                ),
+                                minimumSize: const Size(double.infinity, 50),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -305,9 +302,7 @@ class _RegisterPageState extends State<RegistrasiPage> {
                               ),
                             ),
 
-                      const SizedBox(
-                        height: 150,
-                      ),
+                      const SizedBox(height: 150),
                     ],
                   ),
                 ),

@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 
 class ApiServices {
   static const String baseUrl = "http://10.0.2.2:8000/api";
-  static String?
-      token;
+  static String? username;
+  static String? userEmail;
+  static String? token;
 
   static Future<Map<String, dynamic>> login(
     String email,
@@ -12,14 +13,14 @@ class ApiServices {
   ) async {
     final response = await http.post(
       Uri.parse("$baseUrl/login"),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
+      username = data['name'];
+      userEmail = data["email"];
       if (data.containsKey("token")) {
         token = data["token"];
       }

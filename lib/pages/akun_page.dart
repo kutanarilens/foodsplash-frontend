@@ -61,7 +61,6 @@ class _AkunPageState extends State<AkunPage> {
           errorMessage = result["message"] ?? "Logout gagal.";
         });
       }
-      
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -101,6 +100,8 @@ class _AkunPageState extends State<AkunPage> {
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color.fromARGB(255, 25, 118, 210);
+    final name = ApiServices.username;
+    final email = ApiServices.userEmail;
 
     return Scaffold(
       appBar: AppBar(
@@ -152,23 +153,23 @@ class _AkunPageState extends State<AkunPage> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
+                    children: <Widget>[
                       Text(
-                        "Raka Duta",
-                        style: TextStyle(
+                        "$name",
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        "rakadut@gmail.com",
+                        "$email",
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
-                      Text(
-                        "+6283871900300",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
+                      // const Text(
+                      //   "+6283871900300",
+                      //   style: TextStyle(fontSize: 14, color: Colors.grey),
+                      // ),
                     ],
                   ),
                 ),
