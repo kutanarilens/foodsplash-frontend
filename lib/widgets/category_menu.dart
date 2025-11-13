@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodsplash/pages/nearest_food_page.dart';
 
 class CategoryMenu extends StatelessWidget {
   final List<Map<String, dynamic>> categories = const [
@@ -16,23 +17,44 @@ class CategoryMenu extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: categories.map((item) {
-          return Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: item['color'].withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
+          final bool isTerdekat = item['label'] == 'Terdekat';
+
+          return InkWell(
+            onTap: isTerdekat
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const NearestFoodPage(),
+                      ),
+                    );
+                  }
+                : null,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: item['color'].withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Icon(
+                    item['icon'],
+                    color: item['color'],
+                    size: 30,
+                  ),
                 ),
-                child: Icon(item['icon'], color: item['color'], size: 30),
-              ),
-              SizedBox(height: 4),
-              Text(
-                item['label'],
-                style: TextStyle(fontSize: 11, color: Colors.black54),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  item['label'],
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           );
         }).toList(),
       ),
