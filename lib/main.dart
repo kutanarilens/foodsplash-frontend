@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodsplash/pages/login.dart';
+<<<<<<< HEAD
 import 'package:foodsplash/pages/registrasi.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/promo_page.dart';
@@ -20,10 +21,17 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+=======
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FoodSplash Clone',
+<<<<<<< HEAD
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -75,6 +83,11 @@ class MyApp extends StatelessWidget {
           builder: (_) => LoginScreen(),
         );
       },
+=======
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginScreen(),
+      debugShowCheckedModeBanner: false,
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
     );
   }
 }

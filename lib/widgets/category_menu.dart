@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:foodsplash/pages/nearest_food_page.dart';
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
 
 class CategoryMenu extends StatelessWidget {
   final List<Map<String, dynamic>> categories = const [
@@ -16,6 +20,7 @@ class CategoryMenu extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: categories.map((item) {
+<<<<<<< HEAD
           return Column(
             children: [
               Container(
@@ -33,6 +38,46 @@ class CategoryMenu extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
+=======
+          final bool isTerdekat = item['label'] == 'Terdekat';
+
+          return InkWell(
+            onTap: isTerdekat
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const NearestFoodPage(),
+                      ),
+                    );
+                  }
+                : null,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: item['color'].withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Icon(
+                    item['icon'],
+                    color: item['color'],
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item['label'],
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
           );
         }).toList(),
       ),
