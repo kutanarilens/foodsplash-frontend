@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
 import 'package:foodsplash/pages/chat_list_page.dart';
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
 
 class HeaderWidget extends StatelessWidget {
   @override
@@ -52,6 +55,13 @@ class HeaderWidget extends StatelessWidget {
                 ),
               ),
             ),
+<<<<<<< HEAD
+
+
+            Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
+            SizedBox(width: 10),
+            Icon(Icons.chat_bubble, color: Colors.lightBlueAccent),
+=======
             IconButton(
               tooltip: 'Notifications',
               icon: const Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
@@ -68,6 +78,7 @@ class HeaderWidget extends StatelessWidget {
                 );
               },
             ),
+>>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
           ],
         ),
 
