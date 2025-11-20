@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodsplash/pages/login.dart';
-<<<<<<< HEAD
 import 'package:foodsplash/pages/registrasi.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/promo_page.dart';
@@ -21,32 +20,23 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-=======
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
->>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FoodSplash Clone',
-<<<<<<< HEAD
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        useMaterial3: false,
+        useMaterial3: false, // Mempertahankan pengaturan tema
       ),
 
-      /// 🔹 Start dari halaman login (seperti main.dart lamamu)
+      /// 🔹 Start dari halaman login
       initialRoute: '/login',
 
     
-      routes: {
+      routes: { // Named Routes
         '/login': (context) => LoginScreen(),
-
         '/register': (context) => RegistrasiPage(),
-
         '/home': (context) => const Homepage(),
         '/aktivitas': (context) => const AktivitasPage(),
         '/promo': (context) => PromoPage(),
@@ -61,6 +51,7 @@ class MyApp extends StatelessWidget {
 
 
       onGenerateRoute: (settings) {
+        // Menangani rute yang membutuhkan argumen (seperti data pesanan)
         if (settings.name == '/rincian-pesanan') {
 
           final args = settings.arguments as Map<String, dynamic>?;
@@ -78,16 +69,11 @@ class MyApp extends StatelessWidget {
           );
         }
 
-
+        // Default route jika rute yang diminta tidak ditemukan
         return MaterialPageRoute(
           builder: (_) => LoginScreen(),
         );
       },
-=======
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginScreen(),
-      debugShowCheckedModeBanner: false,
->>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
     );
   }
 }

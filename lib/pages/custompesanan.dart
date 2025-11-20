@@ -32,10 +32,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
         centerTitle: true,
         title: const Text(
           "Custom Pesanan",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -56,16 +53,8 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                   height: 260,
                   fit: BoxFit.cover,
                 ),
-                Positioned(
-                  top: 40,
-                  right: 16,
-                  child: _ratingBadge(),
-                ),
-                Positioned(
-                  bottom: -25,
-                  left: 20,
-                  child: _productTitle(),
-                ),
+                Positioned(top: 40, right: 16, child: _ratingBadge()),
+                Positioned(bottom: -25, left: 20, child: _productTitle()),
               ],
             ),
 
@@ -94,18 +83,18 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                 children: [
                   Wrap(
                     spacing: 8,
-                    children: [
-                      _tag('Rescued'),
-                      _tag('Vegan'),
-                      _tag('30 min'),
-                    ],
+                    children: [_tag('Rescued'), _tag('Vegan'), _tag('30 min')],
                   ),
                   Row(
                     children: [
                       SvgPicture.asset(
                         'assets/vectors/fire.svg',
                         height: 14,
-                        color: Colors.grey,
+                        colorFilter: const ColorFilter.mode(
+                          // ✅ Ganti 'color' dengan 'colorFilter'
+                          Colors.grey,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       const SizedBox(width: 4),
                       const Text(
@@ -113,7 +102,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -140,7 +129,9 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                     borderRadius: BorderRadius.circular(18),
                   ),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 40, vertical: 12),
+                    horizontal: 40,
+                    vertical: 12,
+                  ),
                 ),
                 onPressed: () {
                   // ➜ Kirim qty, totalPrice, dan catatan ke RincianPesananPage
@@ -180,29 +171,27 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
               _buildNavItem(Icons.home, 'Produk', false, () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const Homepage()),
+                  MaterialPageRoute(builder: (context) => const Homepage()),
                 );
               }),
               _buildNavItem(Icons.article_outlined, 'Aktivitas', true, () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AktivitasPage()),
+                    builder: (context) => const AktivitasPage(),
+                  ),
                 );
               }),
               _buildNavItem(Icons.percent, 'Promo', false, () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => PromoPage()),
+                  MaterialPageRoute(builder: (context) => PromoPage()),
                 );
               }),
               _buildNavItem(Icons.person_outline, 'Akun', false, () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const AkunPage()),
+                  MaterialPageRoute(builder: (context) => const AkunPage()),
                 );
               }),
             ],
@@ -215,113 +204,109 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
   // ======== SUBWIDGETS =========
 
   Widget _ratingBadge() => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        child: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.star, color: Colors.white, size: 12),
-            SizedBox(width: 4),
-            Text('4.5', style: TextStyle(color: Colors.white, fontSize: 12)),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    decoration: BoxDecoration(
+      color: Colors.black.withOpacity(0.5),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.white),
+    ),
+    child: const Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.star, color: Colors.white, size: 12),
+        SizedBox(width: 4),
+        Text('4.5', style: TextStyle(color: Colors.white, fontSize: 12)),
+      ],
+    ),
+  );
 
   Widget _productTitle() => Container(
-        width: 220,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 2))
-          ],
+    width: 220,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(30),
+      boxShadow: const [
+        BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 2)),
+      ],
+    ),
+    child: const Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Martabak Telur',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF4A4A4A),
+          ),
+          textAlign: TextAlign.center,
         ),
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Martabak Telur',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF4A4A4A)),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 2),
-            Text(
-              'Martabak Ncis Ganteng',
-              style: TextStyle(fontSize: 12, color: Color(0xFF616161)),
-            ),
-          ],
+        SizedBox(height: 2),
+        Text(
+          'Martabak Ncis Ganteng',
+          style: TextStyle(fontSize: 12, color: Color(0xFF616161)),
         ),
-      );
+      ],
+    ),
+  );
 
   Widget _keterangan() => const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Keterangan',
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF5D5858)),
-          ),
-          SizedBox(height: 6),
-          Text(
-            'Martabak Telur Ayam Kampung, Menggunakan Tepung Terigu Terpilih, Menggunakan 2 Telor Ayam Kampung',
-            style: TextStyle(
-              fontSize: 10,
-              color: Color(0xFF5D5858),
-              height: 1.4,
-            ),
-          ),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Keterangan',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF5D5858),
+        ),
+      ),
+      SizedBox(height: 6),
+      Text(
+        'Martabak Telur Ayam Kampung, Menggunakan Tepung Terigu Terpilih, Menggunakan 2 Telor Ayam Kampung',
+        style: TextStyle(fontSize: 10, color: Color(0xFF5D5858), height: 1.4),
+      ),
+    ],
+  );
 
   Widget _nutrisi() => SizedBox(
-        width: 130,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Nutritional Value',
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF5D5858)),
-            ),
-            SizedBox(height: 8),
-            _NutriRow('Protein', '2.5g'),
-            _NutriRow('Karbohidrat', '14.7g'),
-            _NutriRow('Sodium', '19%*'),
-            _NutriRow('Potassium', '5%*'),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '*Daily value',
-                style: TextStyle(fontSize: 9),
-              ),
-            ),
-          ],
+    width: 130,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text(
+          'Nutritional Value',
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF5D5858),
+          ),
         ),
-      );
+        SizedBox(height: 8),
+        _NutriRow('Protein', '2.5g'),
+        _NutriRow('Karbohidrat', '14.7g'),
+        _NutriRow('Sodium', '19%*'),
+        _NutriRow('Potassium', '5%*'),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text('*Daily value', style: TextStyle(fontSize: 9)),
+        ),
+      ],
+    ),
+  );
 
   Widget _tag(String text) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFE9E9E9)),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 10, color: Color(0xFF9E9E9E)),
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(
+      border: Border.all(color: const Color(0xFFE9E9E9)),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Text(
+      text,
+      style: const TextStyle(fontSize: 10, color: Color(0xFF9E9E9E)),
+    ),
+  );
 
   Widget _bahanBahan() {
     final List<String> bahanImages = [
@@ -339,7 +324,11 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
           borderRadius: BorderRadius.circular(20),
           color: Colors.white,
           boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
           ],
         ),
         child: Column(
@@ -374,102 +363,105 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
   }
 
   Widget _catatanRestoran() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Catatan Untuk Restoran',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-            ),
-            const Text(
-              'Optional',
-              style: TextStyle(color: Colors.grey, fontSize: 10),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF9F9F9),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFE7E8ED)),
-              ),
-              child: TextField(
-                controller: _catatan,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  hintText:
-                      '(Makanan yang membuat Anda alergi, saus ekstra misalnya)',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 11),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ],
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Catatan Untuk Restoran',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
         ),
-      );
+        const Text(
+          'Optional',
+          style: TextStyle(color: Colors.grey, fontSize: 10),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF9F9F9),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE7E8ED)),
+          ),
+          child: TextField(
+            controller: _catatan,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText:
+                  '(Makanan yang membuat Anda alergi, saus ekstra misalnya)',
+              hintStyle: TextStyle(color: Colors.grey, fontSize: 11),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 
   Widget _orderBar(int totalPrice) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Container(
-          height: 48,
-          decoration: BoxDecoration(
-            color: const Color(0xFF32B7E8),
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: const [
-              BoxShadow(color: Colors.black26, blurRadius: 8)
-            ],
+    padding: const EdgeInsets.symmetric(horizontal: 50),
+    child: Container(
+      height: 48,
+      decoration: BoxDecoration(
+        color: const Color(0xFF32B7E8),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            'Rp $totalPrice',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Row(
             children: [
-              Text(
-                'Rp $totalPrice',
-                style: const TextStyle(
+              _qtyButton('-', () {
+                setState(() {
+                  if (qty > 1) qty--;
+                });
+              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  '$qty',
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
-              ),
-              Row(
-                children: [
-                  _qtyButton('-', () {
-                    setState(() {
-                      if (qty > 1) qty--;
-                    });
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      '$qty',
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  _qtyButton('+', () {
-                    setState(() {
-                      qty++;
-                    });
-                  }),
-                ],
+                ),
               ),
+              _qtyButton('+', () {
+                setState(() {
+                  qty++;
+                });
+              }),
             ],
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 
   Widget _qtyButton(String label, VoidCallback onTap) => InkWell(
-        onTap: onTap,
-        child: Text(
-          label,
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.bold),
-        ),
-      );
+    onTap: onTap,
+    child: Text(
+      label,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
 }
 
 // Nutritional Row
@@ -487,8 +479,7 @@ class _NutriRow extends StatelessWidget {
           Expanded(child: Text(label, style: const TextStyle(fontSize: 10))),
           Text(
             value,
-            style: const TextStyle(
-                fontWeight: FontWeight.w600, fontSize: 10),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 10),
           ),
         ],
       ),
@@ -498,7 +489,11 @@ class _NutriRow extends StatelessWidget {
 
 // Bottom Navbar Item
 Widget _buildNavItem(
-    IconData icon, String label, bool isActive, VoidCallback onTap) {
+  IconData icon,
+  String label,
+  bool isActive,
+  VoidCallback onTap,
+) {
   return InkWell(
     onTap: onTap,
     child: Column(
@@ -508,7 +503,9 @@ Widget _buildNavItem(
         Text(
           label,
           style: TextStyle(
-              color: isActive ? Colors.lightBlue : Colors.grey, fontSize: 12),
+            color: isActive ? Colors.lightBlue : Colors.grey,
+            fontSize: 12,
+          ),
         ),
       ],
     ),

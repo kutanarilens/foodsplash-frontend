@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:foodsplash/pages/chat_list_page.dart';
->>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
 
 class HeaderWidget extends StatelessWidget {
   @override
@@ -55,19 +52,13 @@ class HeaderWidget extends StatelessWidget {
                 ),
               ),
             ),
-<<<<<<< HEAD
-
-
-            Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
-            SizedBox(width: 10),
-            Icon(Icons.chat_bubble, color: Colors.lightBlueAccent),
-=======
+            // --- BAGIAN KONFLIK YANG SUDAH DIGABUNG ---
             IconButton(
               tooltip: 'Notifications',
               icon: const Icon(Icons.notifications_rounded, color: Colors.lightBlueAccent),
-              onPressed: () {},
+              onPressed: () {}, // Anda bisa menambahkan aksi notifikasi di sini
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             IconButton(
               tooltip: 'Messages',
               icon: const Icon(Icons.chat_bubble, color: Colors.lightBlueAccent),
@@ -78,24 +69,24 @@ class HeaderWidget extends StatelessWidget {
                 );
               },
             ),
->>>>>>> 4b5e1b0349dc23ccdc371e802f91758212d7db02
+            // --- AKHIR BAGIAN KONFLIK YANG SUDAH DIGABUNG ---
           ],
         ),
 
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
 
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
           decoration: BoxDecoration(
             color: Colors.lightBlue[50], 
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(
             children: [
-              SizedBox(width: 15),
-              Icon(Icons.location_on, color: Colors.lightBlue, size: 20),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 15),
+              const Icon(Icons.location_on, color: Colors.lightBlue, size: 20),
+              const SizedBox(width: 5),
+              const Text(
                 'Jl. Kampung Mangga No.53', 
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -103,8 +94,8 @@ class HeaderWidget extends StatelessWidget {
                   fontSize: 12
                 ),
               ),
-              Spacer(),
-              Icon(Icons.arrow_forward_ios, color: Colors.lightBlue, size: 16),
+              const Spacer(),
+              const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue, size: 16),
             ],
           ),
         ),
