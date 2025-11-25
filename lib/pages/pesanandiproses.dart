@@ -363,7 +363,7 @@ class _BottomNavBar extends StatelessWidget {
                 if (current == _NavItem.produk) return;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const Homepage()),
+                  MaterialPageRoute(builder: (_) => Homepage()),
                 );
               },
             ),

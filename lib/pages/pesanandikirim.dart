@@ -5,6 +5,7 @@ import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesananselesai.dart';
 import 'package:foodsplash/pages/pesanandibatalkan.dart';
+import 'package:foodsplash/pages/track_order_page.dart';
 
 class PesananDikirimPage extends StatelessWidget {
   const PesananDikirimPage({super.key});
@@ -309,10 +310,10 @@ class _OrderCardDikirim extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: OutlinedButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text('Fitur lacak pesanan belum diimplementasikan'),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TrackOrderPage(), // pakai default orderNo & ETA
                     ),
                   );
                 },
@@ -368,7 +369,7 @@ class _BottomNavBar extends StatelessWidget {
                 if (current == _NavItem.produk) return;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const Homepage()),
+                  MaterialPageRoute(builder: (_) => Homepage()),
                 );
               },
             ),
