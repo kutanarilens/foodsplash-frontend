@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:foodsplash/models/menu_item.dart';
 import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/promo_page.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart'; // Digabungkan dari versi lama
 import 'package:foodsplash/pages/custompesanan.dart';
-import 'package:foodsplash/pages/pesanandiproses.dart'; // Digunakan untuk navigasi 'Aktivitas'
+import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/widgets/header_widget.dart';
 import 'package:foodsplash/widgets/category_menu.dart';
 import 'package:foodsplash/widgets/food_item_card.dart';
 import 'package:foodsplash/widgets/promo_banner.dart';
+import 'package:foodsplash/services/menu_service.dart';
 
-class Homepage extends StatelessWidget {
-  const Homepage({super.key}); // Konstruktor const dipertahankan
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  late Future<List<MenuItem>> _futureMenus;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureMenus = MenuService().fetchNearestMenus();  // or fetchMenus()
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,56 +60,61 @@ class Homepage extends StatelessWidget {
               ),
             ),
 
-            Row(
-              children: [
-                // ====== PRODUK 1 (dengan InkWell) ======
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            // Navigasi ke halaman kustomisasi pesanan
-                            builder: (_) => const CustomPesananPage(),
-                          ),
-                        );
-                      },
-                      child: FoodItemCard(
-                        title: 'Mie Gacoan, Depok Kelapa Dua',
-                        distance: '2.17 km',
-                        rating: '4.8 5rb+ rating',
+            FutureBuilder<List<MenuItem>>(
+              future: _futureMenus,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return CircularProgressIndicator();
+
+                final menus = snapshot.data!;
+                final first = menus[0];
+                final second = menus.length > 1 ? menus[1] : null;
+
+                return Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CustomPesananPage(menu: first),
+                            ),
+                          );
+                        },
+                        child: FoodItemCard(
+                          title: first.namaMenu,
+                          distance: '2 km',
+                          rating:
+                              '${(first.avgRating ?? 0).toStringAsFixed(1)} • ${(first.reviewsCount ?? 0)} rating',
+                        ),
                       ),
                     ),
-                  ),
-                ),
 
-                const SizedBox(width: 15),
+                    const SizedBox(width: 15),
 
-                // ====== PRODUK 2 (dengan InkWell) ======
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const CustomPesananPage(),
+                    if (second != null)
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => CustomPesananPage(menu: second),
+                              ),
+                            );
+                          },
+                          child: FoodItemCard(
+                            title: second.namaMenu,
+                            distance: '1.5 km',
+                            rating:
+                                '${(second.avgRating ?? 0).toStringAsFixed(1)} • ${(second.reviewsCount ?? 0)} rating',
                           ),
-                        );
-                      },
-                      child: FoodItemCard(
-                        title: 'Dadar Beredar, Kelapa Dua',
-                        distance: '2.12 km',
-                        rating: '4.6 2rb+ rating',
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                  ],
+                );
+              },
+            )
           ],
         ),
       ),
@@ -107,7 +126,7 @@ class Homepage extends StatelessWidget {
 }
 
 class _NavigationMenu extends StatelessWidget {
-  const _NavigationMenu({super.key}); // Menggunakan konstruktor const standar
+  const _NavigationMenu(); // Menggunakan konstruktor const standar
 
   @override
   Widget build(BuildContext context) {
@@ -175,3 +194,4 @@ Widget _buildNavItem(
     ),
   );
 }
+

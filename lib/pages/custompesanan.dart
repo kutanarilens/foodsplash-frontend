@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:foodsplash/models/menu_item.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/aktivitas_page.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
-import 'package:foodsplash/pages/rincian_pesanan_page.dart';
+import 'package:foodsplash/pages/checkout_page.dart';
+import 'package:foodsplash/models/cart_item.dart';
 
 class CustomPesananPage extends StatefulWidget {
-  const CustomPesananPage({super.key});
+  final MenuItem menu; // ⬅️ simpan menu ke field
+
+  const CustomPesananPage({
+    super.key,
+    required this.menu,
+  });
 
   @override
   State<CustomPesananPage> createState() => _CustomPesananPageState();
 }
 
 class _CustomPesananPageState extends State<CustomPesananPage> {
-  int qty = 2;
+  int qty = 1;
   final TextEditingController _catatan = TextEditingController();
 
-  final int basePrice = 60000; // harga per porsi
+  late int basePrice; // akan diisi dari menu
+
+  @override
+  void initState() {
+    super.initState();
+    basePrice = widget.menu.harga.toInt(); // harga dari database
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +81,6 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                 children: [
                   Expanded(child: _keterangan()),
                   const SizedBox(width: 20),
-                  _nutrisi(),
                 ],
               ),
             ),
@@ -95,11 +107,6 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                           Colors.grey,
                           BlendMode.srcIn,
                         ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Text(
-                        '145 kal',
-                        style: TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
@@ -134,14 +141,20 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                   ),
                 ),
                 onPressed: () {
-                  // ➜ Kirim qty, totalPrice, dan catatan ke RincianPesananPage
+                  final cartItem = CartItem(
+                    id: widget.menu.id,
+                    namaMenu: widget.menu.namaMenu,
+                    deskripsi: widget.menu.deskripsi ?? '',
+                    imageUrl: widget.menu.imageUrl ?? '',
+                    qty: qty,
+                    harga: widget.menu.harga.toInt(), // harga dari DB
+                  );
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RincianPesananPage(
-                        qty: qty,
-                        totalPrice: totalPrice,
-                        note: _catatan.text,
+                      builder: (context) => CheckoutPage(
+                        items: [cartItem],   // ⬅️ kirim list berisi 1 item
                       ),
                     ),
                   );
@@ -171,7 +184,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
               _buildNavItem(Icons.home, 'Produk', false, () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const Homepage()),
+                  MaterialPageRoute(builder: (context) => Homepage()),
                 );
               }),
               _buildNavItem(Icons.article_outlined, 'Aktivitas', true, () {
@@ -230,31 +243,35 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
         BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 2)),
       ],
     ),
-    child: const Column(
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'Martabak Telur',
-          style: TextStyle(
+          widget.menu.namaMenu,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Color(0xFF4A4A4A),
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(
-          'Martabak Ncis Ganteng',
-          style: TextStyle(fontSize: 12, color: Color(0xFF616161)),
+          widget.menu.deskripsi ?? '',
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xFF616161),
+          ),
+          textAlign: TextAlign.center,
         ),
       ],
     ),
   );
 
-  Widget _keterangan() => const Column(
+  Widget _keterangan() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
+      const Text(
         'Keterangan',
         style: TextStyle(
           fontSize: 18,
@@ -262,38 +279,16 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
           color: Color(0xFF5D5858),
         ),
       ),
-      SizedBox(height: 6),
+      const SizedBox(height: 6),
       Text(
-        'Martabak Telur Ayam Kampung, Menggunakan Tepung Terigu Terpilih, Menggunakan 2 Telor Ayam Kampung',
-        style: TextStyle(fontSize: 10, color: Color(0xFF5D5858), height: 1.4),
+        widget.menu.deskripsi ?? '-',
+        style: const TextStyle(
+          fontSize: 10,
+          color: Color(0xFF5D5858),
+          height: 1.4,
+        ),
       ),
     ],
-  );
-
-  Widget _nutrisi() => SizedBox(
-    width: 130,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text(
-          'Nutritional Value',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF5D5858),
-          ),
-        ),
-        SizedBox(height: 8),
-        _NutriRow('Protein', '2.5g'),
-        _NutriRow('Karbohidrat', '14.7g'),
-        _NutriRow('Sodium', '19%*'),
-        _NutriRow('Potassium', '5%*'),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text('*Daily value', style: TextStyle(fontSize: 9)),
-        ),
-      ],
-    ),
   );
 
   Widget _tag(String text) => Container(
@@ -462,29 +457,6 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
       ),
     ),
   );
-}
-
-// Nutritional Row
-class _NutriRow extends StatelessWidget {
-  final String label, value;
-  const _NutriRow(this.label, this.value);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: Text(label, style: const TextStyle(fontSize: 10))),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 10),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 // Bottom Navbar Item

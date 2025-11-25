@@ -4,7 +4,6 @@ import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesanandikirim.dart';
-import 'package:foodsplash/pages/custompesanan.dart';
 import 'package:foodsplash/pages/pesanandibatalkan.dart';
 
 
@@ -261,16 +260,6 @@ class _FinishedOrderTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   GestureDetector(
-                    onTap: () {
-                      // nanti bisa dihubungkan dengan id produk ke backend,
-                      // sekarang dulu: menuju ke halaman CustomPesananPage
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const CustomPesananPage(),
-                        ),
-                      );
-                    },
                     child: const Text(
                       'Pesan Ulang  →',
                       style: TextStyle(
@@ -325,7 +314,7 @@ class _BottomNavBar extends StatelessWidget {
                 if (current == _NavItem.produk) return;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const Homepage()),
+                  MaterialPageRoute(builder: (_) => Homepage()),
                 );
               },
             ),

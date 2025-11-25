@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/login.dart';
 import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/promo_page.dart';
+import 'package:foodsplash/pages/pesanandiproses.dart';
 
 Widget _buildNavItem(
   IconData icon,
@@ -305,7 +305,7 @@ class _NavigationMenu extends StatelessWidget {
             _buildNavItem(Icons.article_outlined, 'Aktivitas', false, () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => AktivitasPage()),
+                MaterialPageRoute(builder: (_) => const PesananDiprosesPage()),
               );
             }),
             _buildNavItem(Icons.percent, 'Promo', false, () {

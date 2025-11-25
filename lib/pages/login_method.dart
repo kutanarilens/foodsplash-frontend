@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginMethod extends StatefulWidget {
   @override
@@ -15,28 +16,54 @@ class _LoginMethodState extends State<LoginMethod> {
   bool loading = false;
   String? errorMessage;
   
-  void _submit() async {
+  Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         loading = true;
         errorMessage = null;
       });
+
       try {
         final result = await ApiServices.login(email, password);
+
         if (result["status"] == "success") {
+          // ⬇️ AMBIL TOKEN DARI HASIL LOGIN
+          // SESUAIKAN KEY-NYA DENGAN RESPON BACKEND-MU
+          // contoh kalau respons: { status: "success", token: "xxx" }
+          String? token = result["token"] as String?;
+
+          // kalau di backend pakai nama lain (misal "access_token"),
+          // bisa pakai fallback seperti ini:
+          token ??= result["access_token"] as String?;
+
+          if (token != null && token.isNotEmpty) {
+            // ⬇️ SIMPAN TOKEN KE SHARED PREFERENCES
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('auth_token', token);
+          }
+
+          // ⬇️ SETELAH TOKEN TERSIMPAN, LANJUT KE HOMEPAGE
+          if (!mounted) return;
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => Homepage()),
           );
+        } else {
+          // jika API mengembalikan status gagal
+          setState(() {
+            errorMessage = result["message"]?.toString() ?? "Login gagal";
+          });
         }
       } catch (e) {
         setState(() {
           errorMessage = "Terjadi Kesalahan ${e.toString()}";
         });
       } finally {
-        setState(() {
-          loading = false;
-        });
+        if (mounted) {
+          setState(() {
+            loading = false;
+          });
+        }
       }
     }
   }

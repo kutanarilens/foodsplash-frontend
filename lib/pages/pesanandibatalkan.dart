@@ -5,7 +5,6 @@ import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesanandikirim.dart';
 import 'package:foodsplash/pages/pesananselesai.dart';
-import 'package:foodsplash/pages/custompesanan.dart';
 
 class PesananDibatalkanPage extends StatelessWidget {
   const PesananDibatalkanPage({super.key});
@@ -283,15 +282,6 @@ class _CanceledOrderCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () {
-                  // nanti sambung ke backend pakai id produk
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const CustomPesananPage(),
-                    ),
-                  );
-                },
                 child: const Text(
                   'Pesan Ulang  →',
                   style: TextStyle(
@@ -336,7 +326,7 @@ class _BottomNavBar extends StatelessWidget {
                 if (current == _NavItem.produk) return;
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const Homepage()),
+                  MaterialPageRoute(builder: (_) => Homepage()),
                 );
               },
             ),

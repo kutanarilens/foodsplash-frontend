@@ -4,9 +4,7 @@ import 'package:foodsplash/pages/registrasi.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart';
-import 'package:foodsplash/pages/custompesanan.dart';
-import 'package:foodsplash/pages/customalamat.dart';
+import 'package:foodsplash/pages/aktivitas_page.dart';import 'package:foodsplash/pages/customalamat.dart';
 import 'package:foodsplash/pages/rincian_pesanan_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesanandikirim.dart';
@@ -41,7 +39,6 @@ class MyApp extends StatelessWidget {
         '/aktivitas': (context) => const AktivitasPage(),
         '/promo': (context) => PromoPage(),
         '/akun': (context) => const AkunPage(),
-        '/custom-pesanan': (context) => const CustomPesananPage(),
         '/custom-alamat': (context) => const CustomAlamatPage(),
         '/pesanan-diproses': (context) => const PesananDiprosesPage(),
         '/pesanan-dikirim': (context) => const PesananDikirimPage(),

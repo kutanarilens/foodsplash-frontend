@@ -6,6 +6,7 @@ import '../services/menu_service.dart';
 import 'package:foodsplash/pages/aktivitas_page.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
+import 'package:foodsplash/pages/custompesanan.dart';
 
 
 class NearestFoodPage extends StatefulWidget {
@@ -59,7 +60,20 @@ class _NearestFoodPageState extends State<NearestFoodPage> {
                     padding: const EdgeInsets.only(bottom: 90),
                     itemCount: items.length,
                     separatorBuilder: (_, __) => const Divider(height: 1),
-                    itemBuilder: (_, i) => _MenuTile(item: items[i]),
+                    itemBuilder: (context, i) {
+                      final menu = items[i];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CustomPesananPage(menu: menu),
+                            ),
+                          );
+                        },
+                        child: _MenuTile(item: menu),
+                      );
+                    },
                   );
                 },
               ),
