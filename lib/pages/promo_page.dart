@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodsplash/pages/aktivitas_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/homepage.dart';
+import 'package:foodsplash/pages/pesanandiproses.dart';
 
 class PromoPage extends StatelessWidget {
   @override
@@ -41,15 +42,13 @@ class _NavigationMenu extends StatelessWidget {
             _buildNavItem(Icons.article_outlined, 'Aktivitas', false, () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => AktivitasPage()),
+                MaterialPageRoute(
+                  builder: (context) => const PesananDiprosesPage(),
+                ),
               );
             }),
 
-            _buildNavItem(
-              Icons.percent,
-              'Promo',
-              true,
-              () {
+            _buildNavItem(Icons.percent, 'Promo', true, () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => PromoPage()),
