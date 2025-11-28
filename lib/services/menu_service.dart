@@ -6,7 +6,7 @@ class MenuService {
   static const String baseUrl = 'http://10.0.2.2:8000/api';
 
   Future<List<MenuItem>> fetchNearestMenus() async {
-    final url = Uri.parse('$baseUrl/menus');
+    final url = Uri.parse('$baseUrl/menu');
     final res = await http.get(url, headers: {'Accept': 'application/json'});
 
     if (res.statusCode >= 200 && res.statusCode < 300) {

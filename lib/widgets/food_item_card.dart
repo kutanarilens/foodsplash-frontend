@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:foodsplash/models/menu_item.dart';
 
 class FoodItemCard extends StatelessWidget {
-  final String title;
-  final String distance;
-  final String rating;
+  final MenuItem item;
+  // final String title;
+  // final String distance;
+  // final String rating;
 
-  final String imageUrl = 'assets/food_placeholder.jpg';
+  // final String imageUrl = 'assets/food_placeholder.jpg';
 
   const FoodItemCard({
-    required this.title,
-    required this.distance,
-    required this.rating,
+    // required this.title,
+    // required this.distance,
+    // required this.rating,
+    super.key,
+    required this.item,
   });
+  ImageProvider _imageProviderGetter() {
+    final placeholderUrl = "asset/food_placeholder.jpg";
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      return NetworkImage(item.imageUrl!);
+    } else {
+      return AssetImage(placeholderUrl);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final String tampilanRating =
+        (item.avgRating != null && item.reviewsCount != null)
+        ? "⭐ ${item.avgRating!.toStringAsFixed(1)}${item.reviewsCount}rb+ rating"
+        : "Belum ada rating";
+
+    final String? tampilkanJarak = (item.jarak != null)
+        ? "${item.jarak!.toStringAsFixed(0)} KM"
+        : null;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -38,7 +59,13 @@ class FoodItemCard extends StatelessWidget {
               width: double.infinity,
               color: Colors.grey[200],
               child: Center(
-                child: Image(image: AssetImage("assets/images/miegacoan.jpg")),
+                child: Image(
+                  image: _imageProviderGetter(),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, StackTrace) => const Center(
+                    child: Icon(Icons.broken_image, color: Colors.grey),
+                  ),
+                ),
               ),
             ),
           ),
@@ -49,29 +76,31 @@ class FoodItemCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$distance · 15-25 min',
+                  '${tampilkanJarak} · 30-46 mnt',
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 SizedBox(height: 4),
 
                 Text(
-                  title,
+                  item.namaMenu,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4),
-
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 14),
-                    SizedBox(width: 4),
-                    Text(
-                      rating,
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    ),
-                  ],
+                Text(
+                  "${tampilanRating},",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
+
+                // Row(
+                //   children: [
+                //     Icon(Icons.star, color: Colors.amber, size: 14),
+                //     SizedBox(width: 4),
+                //     Text(
+                //       rating,
+                //       style: TextStyle(fontSize: 12, color: Colors.black54),
+                // ),
               ],
             ),
           ),

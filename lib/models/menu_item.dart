@@ -8,6 +8,7 @@ class MenuItem {
   final double? avgRating;
   final int? reviewsCount;
   final String? imageUrl;
+  final int? jarak;
 
   MenuItem({
     required this.id,
@@ -19,6 +20,7 @@ class MenuItem {
     this.avgRating,
     this.reviewsCount,
     this.imageUrl,
+    this.jarak,
   });
 
   factory MenuItem.fromJson(Map<String, dynamic> j) {
@@ -37,6 +39,7 @@ class MenuItem {
           ? j['reviews_count'] as int
           : int.tryParse('${j['reviews_count'] ?? 0}'),
       imageUrl: j['image_url'] as String?,
+      jarak: j['jarak'] as int?,
     );
   }
 }

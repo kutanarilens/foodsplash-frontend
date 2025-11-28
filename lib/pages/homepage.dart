@@ -23,7 +23,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    _futureMenus = MenuService().fetchNearestMenus();  // or fetchMenus()
+    _futureMenus = MenuService().fetchNearestMenus(); // or fetchMenus()
   }
 
   @override
@@ -46,11 +46,7 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(height: 20),
             CategoryMenu(),
 
-            const Divider(
-              height: 40,
-              thickness: 8,
-              color: Color(0xFFF3F3F3),
-            ),
+            const Divider(height: 40, thickness: 8, color: Color(0xFFF3F3F3)),
 
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -59,69 +55,72 @@ class _HomepageState extends State<Homepage> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
+            SizedBox(height: 20),
 
             FutureBuilder<List<MenuItem>>(
               future: _futureMenus,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return CircularProgressIndicator();
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
 
                 final menus = snapshot.data!;
+                if (menus.isEmpty) {
+                  return const Center(child: Text("Tidak ada menu ditemukan"));
+                }
                 final first = menus[0];
                 final second = menus.length > 1 ? menus[1] : null;
 
-                return Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => CustomPesananPage(menu: first),
-                            ),
-                          );
-                        },
-                        child: FoodItemCard(
-                          title: first.namaMenu,
-                          distance: '2 km',
-                          rating:
-                              '${(first.avgRating ?? 0).toStringAsFixed(1)} • ${(first.reviewsCount ?? 0)} rating',
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 15),
-
-                    if (second != null)
+                return Padding(
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
                       Expanded(
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => CustomPesananPage(menu: second),
+                                builder: (_) => CustomPesananPage(menu: first),
                               ),
                             );
                           },
-                          child: FoodItemCard(
-                            title: second.namaMenu,
-                            distance: '1.5 km',
-                            rating:
-                                '${(second.avgRating ?? 0).toStringAsFixed(1)} • ${(second.reviewsCount ?? 0)} rating',
-                          ),
+                          child: FoodItemCard(item: first),
                         ),
                       ),
-                  ],
+
+                      const SizedBox(width: 15),
+
+                      if (second != null)
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      CustomPesananPage(menu: second),
+                                ),
+                              );
+                            },
+                            child: FoodItemCard(item: second),
+                          ),
+                        ),
+                    ],
+                  ),
                 );
               },
-            )
+            ),
           ],
         ),
       ),
-
-      // NAVBAR
       bottomNavigationBar: const _NavigationMenu(),
     );
+
+    // NAVBAR
   }
 }
 
@@ -194,4 +193,3 @@ Widget _buildNavItem(
     ),
   );
 }
-
