@@ -4,6 +4,7 @@ import 'package:foodsplash/pages/login.dart';
 import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
+import 'package:foodsplash/pages/ubah_profil_page.dart';
 
 Widget _buildNavItem(
   IconData icon,
@@ -108,13 +109,14 @@ class _AkunPageState extends State<AkunPage> {
         toolbarHeight: kToolbarHeight,
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          iconSize: 30,
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   iconSize: 30,
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        // ),
+        centerTitle: true,
         title: const Text(
           "Profilku",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
@@ -174,7 +176,22 @@ class _AkunPageState extends State<AkunPage> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => print('Edit Profil'),
+                  onPressed: () {
+                    // Navigasi ke UbahProfilPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => UbahProfilPage(
+                          initialName: name,
+                          initialEmail: email,
+                        ),
+                      ),
+                    ).then((value) {
+                      if (value == true) {
+                        setState(() {});
+                      }
+                    });
+                  },
                   icon: const Icon(Icons.edit_outlined, size: 20),
                   color: Colors.black,
                 ),
@@ -223,34 +240,34 @@ class _AkunPageState extends State<AkunPage> {
               () => print('Go to Notifikasi'),
             ),
             const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => print('Ganti Akun'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryBlue,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  "Ganti Akun",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: () => print('Ganti Akun'),
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: primaryBlue,
+            //       padding: const EdgeInsets.symmetric(vertical: 15),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10),
+            //       ),
+            //     ),
+            //     child: const Text(
+            //       "Ganti Akun",
+            //       style: TextStyle(
+            //         fontSize: 16,
+            //         color: Colors.white,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 15),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: loading ? null : _submit,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.shade400,
+                  backgroundColor: Colors.red,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

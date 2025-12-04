@@ -6,7 +6,6 @@ import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesanandikirim.dart';
 import 'package:foodsplash/pages/pesanandibatalkan.dart';
 
-
 class PesananSelesaiPage extends StatelessWidget {
   const PesananSelesaiPage({super.key});
 
@@ -17,17 +16,14 @@ class PesananSelesaiPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => [],
+        // ),
         centerTitle: true,
         title: const Text(
           'Riwayat Aktivitas',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
         ),
       ),
       body: Column(
@@ -75,9 +71,7 @@ class _StatusTabs extends StatelessWidget {
               if (selected == OrderStatus.diproses) return;
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const PesananDiprosesPage(),
-                ),
+                MaterialPageRoute(builder: (_) => const PesananDiprosesPage()),
               );
             },
           ),
@@ -90,9 +84,7 @@ class _StatusTabs extends StatelessWidget {
               if (selected == OrderStatus.dikirim) return;
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const PesananDikirimPage(),
-                ),
+                MaterialPageRoute(builder: (_) => const PesananDikirimPage()),
               );
             },
           ),
@@ -107,20 +99,19 @@ class _StatusTabs extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           _statusChip(
-  context,
-  label: 'Dibatalkan',
-  isActive: selected == OrderStatus.dibatalkan,
-  onTap: () {
-    if (selected == OrderStatus.dibatalkan) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const PesananDibatalkanPage(),
-      ),
-    );
-  },
-),
-
+            context,
+            label: 'Dibatalkan',
+            isActive: selected == OrderStatus.dibatalkan,
+            onTap: () {
+              if (selected == OrderStatus.dibatalkan) return;
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const PesananDibatalkanPage(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -139,9 +130,7 @@ class _StatusTabs extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: isActive
-                ? const Color(0xFF32B7E8)
-                : const Color(0xFFDEDEDE),
+            color: isActive ? const Color(0xFF32B7E8) : const Color(0xFFDEDEDE),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -253,10 +242,7 @@ class _FinishedOrderTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     order.dateTime,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Colors.black54,
-                    ),
+                    style: const TextStyle(fontSize: 11, color: Colors.black54),
                   ),
                   const SizedBox(height: 6),
                   GestureDetector(
@@ -275,10 +261,7 @@ class _FinishedOrderTile extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               order.price,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ],
         ),

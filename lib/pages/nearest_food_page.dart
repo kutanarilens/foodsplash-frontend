@@ -67,7 +67,7 @@ class _NearestFoodPageState extends State<NearestFoodPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => CustomPesananPage(menu: menu),
+                              builder: (_) => CustomPesananPage(menu: menu,),
                             ),
                           );
                         },

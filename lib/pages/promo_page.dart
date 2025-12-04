@@ -8,12 +8,87 @@ class PromoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 120,
-        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'Promo Tersedia',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+        ),
+        // automaticallyImplyLeading: false,
+        // toolbarHeight: 120,
+        elevation: 1,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(padding: EdgeInsets.only(bottom: 20)),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.green[100],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [SizedBox(height: 8)],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.blue[100],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [SizedBox(height: 8)],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.yellow[100],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [SizedBox(height: 8)],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 20),
+        ],
+      ),
       bottomNavigationBar: _NavigationMenu(),
     );
   }
@@ -45,11 +120,7 @@ class _NavigationMenu extends StatelessWidget {
               );
             }),
 
-            _buildNavItem(
-              Icons.percent,
-              'Promo',
-              true,
-              () {
+            _buildNavItem(Icons.percent, 'Promo', true, () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => PromoPage()),
