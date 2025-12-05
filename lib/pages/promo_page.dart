@@ -120,12 +120,7 @@ class _NavigationMenu extends StatelessWidget {
               );
             }),
 
-            _buildNavItem(Icons.percent, 'Promo', true, () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => PromoPage()),
-              );
-            }),
+            _buildNavItem(Icons.percent, 'Promo', true, () {}),
 
             _buildNavItem(Icons.person_outline, 'Akun', false, () {
               Navigator.pushReplacement(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/login.dart';
+import 'package:foodsplash/pages/login_method.dart';
 
 class RegistrasiPage extends StatefulWidget {
   @override
@@ -301,6 +302,30 @@ class _RegisterPageState extends State<RegistrasiPage> {
                                 ),
                               ),
                             ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueGrey,
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => LoginMethod()),
+                          );
+                        },
+                        child: const Text(
+                          "Sudah Mempunyai Akun? Login Sekarang!",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
 
                       const SizedBox(height: 150),
                     ],

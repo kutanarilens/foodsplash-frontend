@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodsplash/layout/data/api_services.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/login.dart';
+import 'package:foodsplash/pages/registrasi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginMethod extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LoginMethodState extends State<LoginMethod> {
   String password = "";
   bool loading = false;
   String? errorMessage;
-  
+
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -173,6 +174,32 @@ class _LoginMethodState extends State<LoginMethod> {
                                   ),
                                 ),
                               ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueGrey,
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => RegistrasiPage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Belum Mempunyai Akun?",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

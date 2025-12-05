@@ -41,6 +41,70 @@ class AkunPage extends StatefulWidget {
 class _AkunPageState extends State<AkunPage> {
   bool loading = false;
   String? errorMessage;
+  void _confirmLogout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Konfirmasi Logout"),
+          content: const Text("Apakah Anda yakin ingin keluar dari akun ini?"),
+          actions: <Widget>[
+            // Tombol 'Batal'
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Tutup dialog
+              },
+              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+            ),
+            // Tombol 'Logout'
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Tutup dialog
+                _performLogout(); // Lanjutkan proses logout
+              },
+              child: const Text("Logout", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _performLogout() async {
+    setState(() {
+      loading = true;
+      errorMessage = null;
+    });
+
+    try {
+      final result = await ApiServices.logout();
+
+      if (result["status"] == "success" && mounted) {
+        // Navigasi ke halaman login dan hapus semua rute
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => LoginScreen()),
+          (Route<dynamic> route) => false,
+        );
+      } else if (mounted) {
+        setState(() {
+          errorMessage = result["message"] ?? "Logout gagal.";
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          errorMessage = "Terjadi Kesalahan saat Logout: ${e.toString()}";
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
 
   void _submit() async {
     setState(() {
@@ -109,13 +173,6 @@ class _AkunPageState extends State<AkunPage> {
         toolbarHeight: kToolbarHeight,
         elevation: 0,
         backgroundColor: Colors.white,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   iconSize: 30,
-        //   icon: Icon(Icons.arrow_back, color: Colors.black),
-        // ),
         centerTitle: true,
         title: const Text(
           "Profilku",
@@ -168,10 +225,6 @@ class _AkunPageState extends State<AkunPage> {
                         "$email",
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
-                      // const Text(
-                      //   "+6283871900300",
-                      //   style: TextStyle(fontSize: 14, color: Colors.grey),
-                      // ),
                     ],
                   ),
                 ),
@@ -203,12 +256,12 @@ class _AkunPageState extends State<AkunPage> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 10),
-            _buildAccountOption(
-              context,
-              Icons.receipt_long,
-              'Aktivitasku',
-              () => print('Go to Aktivitasku'),
-            ),
+            _buildAccountOption(context, Icons.receipt_long, 'Aktivitasku', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PesananDiprosesPage()),
+              );
+            }),
             _buildAccountOption(
               context,
               Icons.credit_card,
@@ -240,32 +293,10 @@ class _AkunPageState extends State<AkunPage> {
               () => print('Go to Notifikasi'),
             ),
             const SizedBox(height: 40),
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: ElevatedButton(
-            //     onPressed: () => print('Ganti Akun'),
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: primaryBlue,
-            //       padding: const EdgeInsets.symmetric(vertical: 15),
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(10),
-            //       ),
-            //     ),
-            //     child: const Text(
-            //       "Ganti Akun",
-            //       style: TextStyle(
-            //         fontSize: 16,
-            //         color: Colors.white,
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(height: 15),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: loading ? null : _submit,
+                onPressed: loading ? null : _confirmLogout,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   padding: const EdgeInsets.symmetric(vertical: 15),

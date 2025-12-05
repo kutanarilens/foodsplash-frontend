@@ -4,7 +4,7 @@ import 'package:foodsplash/pages/registrasi.dart';
 import 'package:foodsplash/pages/homepage.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart';import 'package:foodsplash/pages/customalamat.dart';
+import 'package:foodsplash/pages/customalamat.dart';
 import 'package:foodsplash/pages/rincian_pesanan_page.dart';
 import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/pesanandikirim.dart';
@@ -31,12 +31,12 @@ class MyApp extends StatelessWidget {
       /// 🔹 Start dari halaman login
       initialRoute: '/login',
 
-    
-      routes: { // Named Routes
+      routes: {
+        // Named Routes
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegistrasiPage(),
         '/home': (context) => const Homepage(),
-        '/aktivitas': (context) => const AktivitasPage(),
+        '/aktivitas': (context) => const PesananDiprosesPage(),
         '/promo': (context) => PromoPage(),
         '/akun': (context) => const AkunPage(),
         '/custom-alamat': (context) => const CustomAlamatPage(),
@@ -46,11 +46,9 @@ class MyApp extends StatelessWidget {
         '/pesanan-dibatalkan': (context) => const PesananDibatalkanPage(),
       },
 
-
       onGenerateRoute: (settings) {
         // Menangani rute yang membutuhkan argumen (seperti data pesanan)
         if (settings.name == '/rincian-pesanan') {
-
           final args = settings.arguments as Map<String, dynamic>?;
 
           final int qty = args?['qty'] as int? ?? 1;
@@ -67,9 +65,7 @@ class MyApp extends StatelessWidget {
         }
 
         // Default route jika rute yang diminta tidak ditemukan
-        return MaterialPageRoute(
-          builder: (_) => LoginScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => LoginScreen());
       },
     );
   }

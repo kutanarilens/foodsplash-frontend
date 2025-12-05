@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodsplash/models/menu_item.dart';
 import 'package:foodsplash/pages/homepage.dart';
-import 'package:foodsplash/pages/aktivitas_page.dart';
+import 'package:foodsplash/pages/pesanandiproses.dart';
 import 'package:foodsplash/pages/promo_page.dart';
 import 'package:foodsplash/pages/akun_page.dart';
 import 'package:foodsplash/pages/checkout_page.dart';
@@ -11,10 +11,7 @@ import 'package:foodsplash/models/cart_item.dart';
 class CustomPesananPage extends StatefulWidget {
   final MenuItem menu; // ⬅️ simpan menu ke field
 
-  const CustomPesananPage({
-    super.key,
-    required this.menu,
-  });
+  const CustomPesananPage({super.key, required this.menu});
 
   @override
   State<CustomPesananPage> createState() => _CustomPesananPageState();
@@ -154,7 +151,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CheckoutPage(
-                        items: [cartItem],   // ⬅️ kirim list berisi 1 item
+                        items: [cartItem], // ⬅️ kirim list berisi 1 item
                       ),
                     ),
                   );
@@ -191,7 +188,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AktivitasPage(),
+                    builder: (context) => const PesananDiprosesPage(),
                   ),
                 );
               }),
@@ -258,10 +255,7 @@ class _CustomPesananPageState extends State<CustomPesananPage> {
         const SizedBox(height: 2),
         Text(
           widget.menu.deskripsi ?? '',
-          style: const TextStyle(
-            fontSize: 12,
-            color: Color(0xFF616161),
-          ),
+          style: const TextStyle(fontSize: 12, color: Color(0xFF616161)),
           textAlign: TextAlign.center,
         ),
       ],
